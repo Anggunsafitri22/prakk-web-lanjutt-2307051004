@@ -52,9 +52,9 @@
         <div class="profile-img">
         <img src="{{ asset('Images/profile.jpg') }}" alt="Foto Profil">
         </div>
-        <div class="profile-info">Anggun Safitri {{ $nama }}</div>
-        <div class="profile-info">2307051004 {{ $npm }}</div>
-        <div class="profile-info">D3 Manajemen Informatika {{ $kelas }}</div>
+        <div class="profile-info"> {{ $nama }}</div>
+        <div class="profile-info"> {{ $npm }}</div>
+        <div class="profile-info"> {{ $nama_kelas ?? 'kelas tidak ditemukan'}}</div>
     </div>
 
 </body>
