@@ -29,7 +29,7 @@
             flex-direction: column;
             align-items: center;
         }
-        input {
+        input, select {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -54,11 +54,28 @@
 <body>
     <div class="container">
         <h2>Create User</h2>
-        <form action="{{ route('user.store') }}" method="POST" class="space-y-4">
-                   @csrf
-            <input type="text" placeholder="Nama" required>
-            <input type="text" placeholder="NPM" required>
-            <input type="text" placeholder="Kelas" required>
+        <form action="{{ route('user.store') }}" method="POST">
+            @csrf
+            <input type="text" name="nama" placeholder="Nama" >
+            @foreach ($errors->get('nama') as $msg)
+
+            <p>{{$msg}}</p>
+
+            @endforeach
+            <input type="text" name="npm" placeholder="NPM" >
+            @foreach ($errors->get('npm') as $msg)
+
+            <p>{{$msg}}</p>
+
+            @endforeach
+
+            <label for="kelas_id">Kelas:</label>
+            <select name="kelas_id" id="kelas_id" >
+                @foreach ($kelas as $kelasItem)
+                    <option value="{{ $kelasItem->id }}">{{ $kelasItem->nama_kelas }}</option>
+                @endforeach
+            </select>
+
             <button type="submit">Submit</button>
         </form>
     </div>
