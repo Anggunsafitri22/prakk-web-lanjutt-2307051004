@@ -13,8 +13,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('npm');
-            $table->foreignId('kelas_id')->constrained();
+            $table->string('npm')->unique();
+            $table->foreignId('kelas_id')->constrained('kelas')->onDelete('cascade'); // Foreign key ke tabel kelas
             $table->timestamps();
         });
     }
@@ -22,8 +22,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('user');
+    public function down(): void {
+        Schema::dropIfExists('users');
     }
 };

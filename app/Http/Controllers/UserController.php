@@ -4,33 +4,65 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kelas;
-use App\Models\UserModel;
 use App\Http\Requests\UserRequest;
+use App\Models\UserModel;
+use App\Models\User;
 
 class UserController extends Controller
 {
-    public function create(){
+  
+    public function store(UserRequest $request)
+    {
+        $validateData = $request->validate([
+            'nama' => 'required|string|max:255',
+            'npm' => 'required|string|max:255',
+            'kelas_id' => 'required|exists:kelas,id',
+        ]);
 
-        return view('create_user',[ 'kelas'=> Kelas::all(),
-      ]);
+        $user = UserModel::create($validateData);
+
+        $user->load('kelas');
+
+        return view('profile', [
+            'nama' => $user->nama,
+            'npm' => $user->npm,
+            'nama_kelas' => $user->kelas->nama_kelas ?? 'Kelas tidak ditemukan',
+    ]);
+
+        return redirect()->to('/user');
+
     }
 
-    public function store(UserRequest $request)
-{
-    $validatedData = $request->validate([
-        'nama' => 'required|string|max:255',
-        'npm' => 'required|string|max:255',
-        'kelas_id' => 'required|exists:kelas,id',
-    ]);
+    public function create()
+    {
+        $kelasModel = new Kelas();
 
-    $user = UserModel::create($validatedData);
+        $kelas = $kelasModel->getKelas();
 
-    $user->load('kelas');
+        $data = [
+            'title' => 'Create User',
+            'kelas' => $kelas,
+        ];
 
-    return view('profile', [
-        'nama' => $user->nama,
-        'npm' => $user->npm,
-        'nama_kelas' => $user->kelas->nama_kelas ?? 'Kelas tidak ditemukan',
-    ]);
+        return view('create_user', $data);
+    }
+
+    public $userModel;
+    public $kelasModel;
+
+    public function __construct()
+    {
+    $this->userModel = new UserModel();
+    $this->kelasModel = new Kelas();
+    }
+
+    public function index() 
+{ 
+    $data = [ 
+        'title' => 'Create User', 
+        'users' => $this->userModel->getUser(), 
+    ]; 
+ 
+    return view('list_user', $data); 
 }
 }
