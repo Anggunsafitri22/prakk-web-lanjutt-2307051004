@@ -22,8 +22,9 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama' => 'required',
-            'npm' => 'required'
+            'nama' => 'required|string|max:255',
+            'npm' => 'required|string|unique:users,npm',
+            'kelas_id' => 'required|exists:kelas,id', // Tambahkan validasi ini
         ];
     }
-}
+}    

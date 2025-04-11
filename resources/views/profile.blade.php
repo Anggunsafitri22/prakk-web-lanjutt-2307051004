@@ -12,7 +12,7 @@
                         linear-gradient(315deg,rgb(238, 167, 227) 25%, transparent 25%),
                         linear-gradient(45deg,rgb(236, 147, 252) 25%, transparent 25%);
             background-size: 100px 100px;
-            background-color:rgb(251, 161, 226);
+            background-color: rgb(251, 161, 226);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -20,7 +20,7 @@
             margin: 0;
         }
         .profile-card {
-            background: rgba(243, 39, 120, 0.9); /* Semi transparan */
+            background: rgba(243, 39, 120, 0.9);
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -37,10 +37,10 @@
             width: 100%;
             padding: 12px;
             margin: 8px 0;
-            background:rgb(232, 224, 230);
+            background: rgb(232, 224, 230);
             border-radius: 8px;
             font-weight: bold;
-            color:rgb(178, 26, 127);
+            color: rgb(178, 26, 127);
             font-size: 18px;
             text-align: center;
         }
@@ -50,11 +50,11 @@
 
     <div class="profile-card">
         <div class="profile-img">
-        <img src="{{ asset('Images/profile.jpg') }}" alt="Foto Profil">
+            <img src="{{ asset('images/profile.jpg') }}" alt="Foto Profil">
         </div>
-        <div class="profile-info"> {{ $nama }}</div>
-        <div class="profile-info"> {{ $npm }}</div>
-        <div class="profile-info"> {{ $nama_kelas ?? 'kelas tidak ditemukan'}}</div>
+        <div class="profile-info"> {{ $nama ?? 'Nama tidak tersedia' }}</div>
+        <div class="profile-info"> {{ $npm ?? 'NPM tidak tersedia' }}</div>
+        <div class="profile-info"> {{ $nama_kelas ?? 'Kelas tidak ditemukan' }}</div>
     </div>
 
 </body>

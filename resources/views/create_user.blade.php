@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create User</title>
+@extends('layouts.app')
+
+@section('content')
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,6 +17,8 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            width: 100%;
+            max-width: 400px;
         }
         h2 {
             margin-bottom: 20px;
@@ -49,35 +48,48 @@
         button:hover {
             background-color: #218838;
         }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: -5px;
+        }
     </style>
-</head>
-<body>
+
     <div class="container">
         <h2>Create User</h2>
+
+        {{-- Tampilkan pesan sukses jika ada --}}
+        @if(session('success'))
+            <p style="color: green;">{{ session('success') }}</p>
+        @endif
+
+        {{-- Tampilkan pesan error jika ada --}}
+        @if(session('error'))
+            <p style="color: red;">{{ session('error') }}</p>
+        @endif
+
         <form action="{{ route('user.store') }}" method="POST">
             @csrf
-            <input type="text" name="nama" placeholder="Nama" >
-            @foreach ($errors->get('nama') as $msg)
 
-            <p>{{$msg}}</p>
+            {{-- Input Nama --}}
+            <input type="text" name="nama" placeholder="Nama" value="{{ old('nama') }}" required>
+            @error('nama') <p class="error">{{ $message }}</p> @enderror
 
-            @endforeach
-            <input type="text" name="npm" placeholder="NPM" >
-            @foreach ($errors->get('npm') as $msg)
+            {{-- Input NPM --}}
+            <input type="text" name="npm" placeholder="NPM" value="{{ old('npm') }}" required>
+            @error('npm') <p class="error">{{ $message }}</p> @enderror
 
-            <p>{{$msg}}</p>
-
-            @endforeach
-
+            {{-- Pilihan Kelas --}}
             <label for="kelas_id">Kelas:</label>
-            <select name="kelas_id" id="kelas_id" >
-                @foreach ($kelas as $kelasItem)
-                    <option value="{{ $kelasItem->id }}">{{ $kelasItem->nama_kelas }}</option>
-                @endforeach
+            <select name="kelas_id" id="kelas_id" required>
+                <option value="">Pilih Kelas</option> {{-- Tambahkan pilihan default --}}
+                @foreach($kelas as $kelasItem)
+                    <option value="{{$kelasItem->id}}">{{$kelasItem->nama_kelas}}</option>
+                    @endforeach
             </select>
+            @error('kelas_id') <p class="error">{{ $message }}</p> @enderror
 
             <button type="submit">Submit</button>
         </form>
     </div>
-</body>
-</html>
+@endsection
