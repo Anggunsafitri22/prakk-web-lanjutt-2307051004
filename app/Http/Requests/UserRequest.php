@@ -6,25 +6,14 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    // public function authorize(): bool
-    // {
-    //     return false;
-    // }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
+        $userId = $this->route('user'); // Ini ngambil ID dari route (user/{id})
+
         return [
             'nama' => 'required|string|max:255',
-            'npm' => 'required|string|unique:users,npm',
-            'kelas_id' => 'required|exists:kelas,id', // Tambahkan validasi ini
+            'npm' => 'required|string|max:255|unique:users,npm,' . $userId,
+            'kelas_id' => 'required|exists:kelas,id',
         ];
     }
-}    
+}

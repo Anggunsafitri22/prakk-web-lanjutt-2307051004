@@ -1,95 +1,62 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 100%;
-            max-width: 400px;
-        }
-        h2 {
-            margin-bottom: 20px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .error {
-            color: red;
-            font-size: 14px;
-            margin-top: -5px;
-        }
-    </style>
 
-    <div class="container">
-        <h2>Create User</h2>
+<script src="https://cdn.tailwindcss.com"></script>
 
-        {{-- Tampilkan pesan sukses jika ada --}}
-        @if(session('success'))
-            <p style="color: green;">{{ session('success') }}</p>
-        @endif
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center min-h-screen">
 
-        {{-- Tampilkan pesan error jika ada --}}
-        @if(session('error'))
-            <p style="color: red;">{{ session('error') }}</p>
-        @endif
+    <div class="bg-white shadow-xl rounded-lg p-8 w-full max-w-md border border-gray-200">
+        <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Tambah User</h2>
 
-        <form action="{{ route('user.store') }}" method="POST">
+        <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data">
             @csrf
 
-            {{-- Input Nama --}}
-            <input type="text" name="nama" placeholder="Nama" value="{{ old('nama') }}" required>
-            @error('nama') <p class="error">{{ $message }}</p> @enderror
+            <div>
+                <label for="nama" class="block font-semibold text-gray-700">Nama :</label>
+                <input type="text" id="nama" name="nama"
+                    class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 transition-shadow shadow-sm">
 
-            {{-- Input NPM --}}
-            <input type="text" name="npm" placeholder="NPM" value="{{ old('npm') }}" required>
-            @error('npm') <p class="error">{{ $message }}</p> @enderror
+                @foreach ($errors->get('nama') as $msg)
+                    <p class="text-red-500 text-sm mt-1">{{ $msg }}</p>
+                @endforeach
+            </div>
 
-            {{-- Pilihan Kelas --}}
-            <label for="kelas_id">Kelas:</label>
-            <select name="kelas_id" id="kelas_id" required>
-                <option value="">Pilih Kelas</option> {{-- Tambahkan pilihan default --}}
-                @foreach($kelas as $kelasItem)
-                    <option value="{{$kelasItem->id}}">{{$kelasItem->nama_kelas}}</option>
+            <div>
+                <label for="npm" class="block font-semibold text-gray-700">NPM :</label>
+                <input type="text" id="npm" name="npm" 
+                    class="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:ring-2 focus:ring-blue-500 focus:outline-none focus:border-blue-500 transition-shadow shadow-sm">
+
+                @foreach ($errors->get('npm') as $msg)
+                    <p class="text-red-500 text-sm mt-1">{{ $msg }}</p>
+                @endforeach
+            </div>
+
+            <div>
+                <label for="kelas_id" class="block font-semibold text-gray-700">Kelas:</label>
+                <select name="kelas_id" id="kelas_id" 
+                    class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-700 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition">
+                    
+                    @foreach ($kelas as $kelasItem)
+                        <option value="{{ $kelasItem->id }}">{{ $kelasItem->nama_kelas }}</option>
                     @endforeach
-            </select>
-            @error('kelas_id') <p class="error">{{ $message }}</p> @enderror
+                </select>
 
-            <button type="submit">Submit</button>
+                @foreach ($errors->get('kelas_id') as $msg)
+                    <p class="text-red-500 text-sm mt-1">{{ $msg }}</p>
+                @endforeach
+
+                <label for="foto">Foto:</label>
+                <input type="file" id="foto" name="foto"><br><br>
+            
+            </div>
+
+            <button type="submit" 
+                class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition-all duration-200 transform hover:scale-105 shadow-md">
+                Submit
+            </button>
         </form>
     </div>
-@endsection
+
+
+@endsection 
